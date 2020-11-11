@@ -10,24 +10,5 @@ class HomeController = _HomeControllerBase with _$HomeController;
 abstract class _HomeControllerBase with Store {
   final HomeRepository repository;
 
-  @observable
-  ObservableList posts = ObservableList();
-
-  _HomeControllerBase(this.repository) {
-    autorun((_) {
-      print("autorun");
-      _getPosts();
-    });
-  }
-
-  @action
-  _getPosts() {
-    try {
-      repository.getPosts().then((value) {
-        posts = ObservableList.of(value);
-      });
-    } on Exception catch (e) {
-      throw e;
-    }
-  }
+  _HomeControllerBase(this.repository);
 }
