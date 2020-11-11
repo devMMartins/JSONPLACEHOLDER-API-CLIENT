@@ -9,6 +9,7 @@ class CustomDio {
   CustomDio(this.dio){
     dio.options.baseUrl = BASE_URL;
     dio.interceptors.add(CustomInterceptors());
+    dio.options.connectTimeout = 5000;
   }
 
 }
