@@ -8,6 +8,7 @@ import 'package:dio_app/app/app_widget.dart';
 import 'package:dio_app/app/modules/home/home_module.dart';
 
 import 'modules/home/home_repository.dart';
+import 'modules/home/subpages/create/create_module.dart';
 
 class AppModule extends MainModule {
   @override
@@ -21,6 +22,7 @@ class AppModule extends MainModule {
   @override
   List<ModularRouter> get routers => [
         ModularRouter(Modular.initialRoute, module: HomeModule()),
+        ModularRouter('/create', module: CreateModule()),
       ];
 
   @override

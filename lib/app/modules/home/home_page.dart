@@ -22,7 +22,8 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       ),
       body: FutureBuilder<List<PostModel>>(
         future: controller.repository.getPosts(),
-        builder: (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
           if (snapshot.hasError) {
             return Center(
               child: Text('ERRO'),
@@ -39,6 +40,17 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           return Center(child: CircularProgressIndicator());
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, '/create').then((result) {
+              if (result != null) {
+                _showMyDialog(result);
+              } else {
+                _showMyDialog(false);
+              }
+            });
+          }),
     );
   }
 
@@ -51,6 +63,35 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           subtitle: Text("${model.body}"),
         ),
       ),
+    );
+  }
+
+  Future<void> _showMyDialog(bool result) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(result ? "Sucesso!" : "ERRO!"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(result
+                    ? "O Post foi criado e já está disponível para seus leitores!"
+                    : "Ocorreu um problema e o posta não foi criado, tente novamente."),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(result?"Legal!":"Que pena."),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
