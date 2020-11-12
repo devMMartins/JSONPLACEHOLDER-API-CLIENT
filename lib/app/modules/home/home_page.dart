@@ -65,7 +65,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           }
         });
       },
-      onLongPress: ,
+      onLongPress: (){
+        _showDeleteDialog(post.id);
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -75,6 +77,34 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showDeleteDialog(int id) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Deletar post?"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirmar"),
+              onPressed: () {
+                controller.repository.deletePost(id).then((value){
+                  Navigator.of(context).pop();
+                });
+              },
+            ),
+             FlatButton(
+              child: Text("Cancelar"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

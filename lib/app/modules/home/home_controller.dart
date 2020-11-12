@@ -12,8 +12,4 @@ abstract class _HomeControllerBase with Store {
   int id;
 
   _HomeControllerBase(this.repository);
-
-  deletePost(){
-    repository.deletePost(id);
-  }
 }
