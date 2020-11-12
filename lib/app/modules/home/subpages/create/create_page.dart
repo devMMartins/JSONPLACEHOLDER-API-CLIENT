@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../shared/models/post_model.dart';
+import '../../../shared/models/post_model.dart';
 import 'create_controller.dart';
 
 class CreatePage extends StatefulWidget {
+  final PostModel post;
   final String title;
-  const CreatePage({Key key, this.title = "Create Post"}) : super(key: key);
+  const CreatePage({Key key, this.title = "Create Post", this.post})
+      : super(key: key);
 
   @override
   _CreatePageState createState() => _CreatePageState();
@@ -20,15 +24,46 @@ class _CreatePageState extends ModularState<CreatePage, CreateController> {
   void _sendForm() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
-     controller.savePost().then(
-            (value) {
-              if (value == 200 || value == 201) {
-                Navigator.pop(context, true);
-              } else {
-                 Navigator.pop(context, false);
-              }
-            },
-          );
+      if (controller.post.id != null) {
+        //editando
+        _updatePost();
+      } else {
+        _savePost();
+      }
+    }
+  }
+
+  _savePost() {
+    controller.savePost().then(
+      (value) {
+        if (value == 200 || value == 201) {
+          Navigator.pop(context, true);
+        } else {
+          Navigator.pop(context, false);
+        }
+      },
+    );
+  }
+
+  _updatePost() {
+    controller.updatePost().then(
+      (value) {
+        if (value == 200 || value == 201) {
+          Navigator.pop(context, true);
+        } else {
+          Navigator.pop(context, false);
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.post != null) {
+      controller.post = widget.post;
+    } else {
+      controller.post = PostModel();
     }
   }
 
@@ -47,8 +82,9 @@ class _CreatePageState extends ModularState<CreatePage, CreateController> {
               TextFormField(
                 maxLength: 30,
                 validator: controller.validatorTitle,
+                initialValue: controller.post.title,
                 onSaved: (String text) {
-                  controller.title = text;
+                  controller.post.title = text;
                 },
               ),
               TextFormField(
@@ -56,12 +92,13 @@ class _CreatePageState extends ModularState<CreatePage, CreateController> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 10,
                 validator: controller.validatorBody,
+                initialValue: controller.post.body,
                 onSaved: (String text) {
-                  controller.body = text;
+                  controller.post.body = text;
                 },
               ),
               FlatButton(
-                child: Text("Criar"),
+                child: Text(controller.post.id != null? "Modificar":"Criar"),
                 onPressed: () {
                   _sendForm();
                 },

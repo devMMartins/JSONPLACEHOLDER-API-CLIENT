@@ -45,28 +45,40 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           onPressed: () {
             Navigator.pushNamed(context, '/create').then((result) {
               if (result != null) {
-                _showMyDialog(result);
+                _showResponse(result);
               } else {
-                _showMyDialog(false);
+                _showResponse(false);
               }
             });
           }),
     );
   }
 
-  Widget _postCard(BuildContext context, PostModel model) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        child: ListTile(
-          title: Text("POST ${model.id} - ${model.title.toUpperCase()}"),
-          subtitle: Text("${model.body}"),
+  Widget _postCard(BuildContext context, PostModel post) {
+    return GestureDetector(
+      onTap: () {
+        Modular.to.pushNamed('/create', arguments: post).then((result) {
+          if (result != null) {
+            _showResponse(result);
+          } else {
+            _showResponse(false);
+          }
+        });
+      },
+      onLongPress: ,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          child: ListTile(
+            title: Text("POST ${post.id} - ${post.title.toUpperCase()}"),
+            subtitle: Text("${post.body}"),
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _showMyDialog(bool result) async {
+  Future<void> _showResponse(bool result) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -84,7 +96,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text(result?"Legal!":"Que pena."),
+              child: Text(result ? "Legal!" : "Que pena."),
               onPressed: () {
                 Navigator.of(context).pop();
               },

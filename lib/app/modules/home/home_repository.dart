@@ -27,4 +27,22 @@ class HomeRepository {
       throw PostError(e.response.statusCode);
     } 
   }
+
+  Future<int> updatePost(PostModel post) async {
+    try {
+      var response = await _client.dio.put("/posts/${post.id}", data: post.toMap());
+      return response.statusCode;
+    } on DioError catch (e) {
+      throw PostError(e.response.statusCode);
+    } 
+  }
+
+  Future<int> deletePost(int id) async {
+    try {
+      var response = await _client.dio.delete("/posts/$id");
+      return response.statusCode;
+    } on DioError catch (e) {
+      throw PostError(e.response.statusCode);
+    } 
+  }
 }

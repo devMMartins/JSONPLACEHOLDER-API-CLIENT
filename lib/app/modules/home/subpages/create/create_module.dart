@@ -11,7 +11,7 @@ class CreateModule extends ChildModule {
 
   @override
   List<ModularRouter> get routers => [
-        ModularRouter(Modular.initialRoute, child: (_, args) => CreatePage()),
+        ModularRouter(Modular.initialRoute, child: (_, args) => CreatePage(post: args.data)),
       ];
 
   static Inject get to => Inject<CreateModule>.of();

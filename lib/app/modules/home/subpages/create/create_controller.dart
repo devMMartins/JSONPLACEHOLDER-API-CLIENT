@@ -3,6 +3,7 @@ import 'package:dio_app/app/modules/shared/models/post_model.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../shared/models/post_model.dart';
 import '../../home_repository.dart';
 
 part 'create_controller.g.dart';
@@ -12,13 +13,21 @@ class CreateController = _CreateControllerBase with _$CreateController;
 
 abstract class _CreateControllerBase with Store {
   final HomeRepository repository;
+  PostModel post;
   String title;
   String body;
 
   Future<int> savePost() async {
-    var post = PostModel(title: title, body: body);
     try {
       return repository.createPost(post);
+    }  on PostError catch (e){
+      return e.code;
+    }
+  }
+
+   Future<int> updatePost() async {
+    try {
+      return repository.updatePost(post);
     }  on PostError catch (e){
       return e.code;
     }

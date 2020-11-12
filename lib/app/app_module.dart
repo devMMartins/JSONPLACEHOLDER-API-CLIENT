@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:dio_app/app/modules/shared/custom_dio/custom_dio.dart';
-
-import 'app_controller.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter/material.dart';
 import 'package:dio_app/app/app_widget.dart';
 import 'package:dio_app/app/modules/home/home_module.dart';
+import 'package:dio_app/app/modules/shared/custom_dio/custom_dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
+import 'app_controller.dart';
 import 'modules/home/home_repository.dart';
 import 'modules/home/subpages/create/create_module.dart';
 

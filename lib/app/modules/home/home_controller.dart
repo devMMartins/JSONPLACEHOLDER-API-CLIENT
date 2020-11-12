@@ -9,6 +9,11 @@ class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
   final HomeRepository repository;
+  int id;
 
   _HomeControllerBase(this.repository);
+
+  deletePost(){
+    repository.deletePost(id);
+  }
 }
